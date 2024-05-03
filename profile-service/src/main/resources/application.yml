@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: microservice-order
+    microservice-customer:
+      url: http://localhost:8000
+
+  devtools:
+    restart:
+      enabled: true
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27016
+      database: order
+
+server:
+  port: 8000
+  servlet:
+    context-path: /profile
