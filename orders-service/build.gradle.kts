@@ -38,6 +38,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 	implementation("com.google.code.gson:gson:2.10.1")
+	implementation ("org.springframework.kafka:spring-kafka:3.0.10")
 }
 
 tasks.withType<KotlinCompile> {
