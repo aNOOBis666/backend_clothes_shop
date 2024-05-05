@@ -22,6 +22,9 @@ jobs:
         run: |
           cd ./orders-service
           bash ./gradlew bootBuildImage
+          cd ../
+          cd ./profile-service
+          bash ./gradlew bootBuildImage
       - name: build the docker image
         uses: docker/build-push-action@v4
         with:
