@@ -29,8 +29,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          dockerfile: Dockerfile
-          push: false
+          push: true
 
       - name: login to docker hub
         uses: docker/login-action@v1
