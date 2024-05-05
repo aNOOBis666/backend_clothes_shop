@@ -18,6 +18,12 @@ jobs:
           distribution: 'corretto'
           java-version: 17
 
+      - name: login to docker hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
       - name: build the app
         run: |
           cd ./orders-service
@@ -31,12 +37,6 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/rest-api:latest
-
-      - name: login to docker hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: push the docker image to docker hub
         uses: docker/build-push-action@v4
