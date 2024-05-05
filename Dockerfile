@@ -2,9 +2,9 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY target/orders-service-0.0.1-SNAPSHOT.jar /app/orders-service.jar
-ENTRYPOINT ["java", "-jar", "orders-service.jar"]
+COPY target/cl_shop-0.0.1-SNAPSHOT.jar /app/cl_shope.jar
+ENTRYPOINT ["java", "-jar", "cl_shop.jar"]
 
 
-COPY target/profile-service-0.0.1-SNAPSHOT.jar /app/profile-service.jar
-ENTRYPOINT ["java", "-jar", "profile-service.jar"]
+COPY target/profile-0.0.1-SNAPSHOT.jar /app/profile.jar
+ENTRYPOINT ["java", "-jar", "profile.jar"]
