@@ -20,8 +20,8 @@ jobs:
 
       - name: build the app
         run: |
+          cd ./orders-service
           mvn clean
-          mvn install
           mvn -B package --file pom.xml
       - name: build the docker image
         uses: docker/build-push-action@v4
