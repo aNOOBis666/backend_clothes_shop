@@ -2,7 +2,7 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY docker.io/library/cl_shop-0.0.1-SNAPSHOT.jar /app/cl_shope.jar
+COPY docker.io/library/cl_shop-0.0.1-SNAPSHOT.jar /app/cl_shop.jar
 ENTRYPOINT ["java", "-jar", "cl_shop.jar"]
 
 
