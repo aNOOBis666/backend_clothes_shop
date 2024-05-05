@@ -44,8 +44,6 @@ dependencies {
 	implementation("org.springframework:spring-websocket:6.1.6")
 	implementation("org.springframework:spring-messaging:6.1.6")
 
-	implementation("io.springfox:springfox-swagger2:3.0.0")
-	implementation("io.springfox:springfox-boot-starter:3.0.0")
 	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 

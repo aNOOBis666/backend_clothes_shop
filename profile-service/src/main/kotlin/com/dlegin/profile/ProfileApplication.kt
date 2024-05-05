@@ -12,14 +12,15 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguratio
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
+import org.springframework.http.MediaType
+import org.springframework.http.converter.ByteArrayHttpMessageConverter
 import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import springfox.documentation.builders.PathSelectors
-import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.spi.DocumentationType
-import springfox.documentation.spring.web.plugins.Docket
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +33,7 @@ import java.util.*
 )
 @SpringBootApplication
 @EnableMongoRepositories
+@EnableWebMvc
 class Application {
 
 	@Autowired
@@ -57,20 +59,11 @@ class Application {
 					.indentOutput(true)
 					.dateFormat(SimpleDateFormat("yyyy-MM-dd"))
 					.modulesToInstall(ParameterNamesModule())
-
+				converters.add(ByteArrayHttpMessageConverter())
 				converters.add(MappingJackson2HttpMessageConverter(builder.build()))
 
 			}
 		}
-	}
-
-	@Bean
-	fun api(): Docket {
-		return Docket(DocumentationType.SWAGGER_2)
-			.select()
-			.apis(RequestHandlerSelectors.any())
-			.paths(PathSelectors.any())
-			.build()
 	}
 
 	companion object {

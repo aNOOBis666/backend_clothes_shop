@@ -12,18 +12,12 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguratio
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
+import org.springframework.http.converter.ByteArrayHttpMessageConverter
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import springfox.documentation.builders.ApiInfoBuilder
-import springfox.documentation.builders.PathSelectors
-import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.service.ApiInfo
-import springfox.documentation.spi.DocumentationType
-import springfox.documentation.spring.web.plugins.Docket
-import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +30,6 @@ import java.util.*
 )
 @SpringBootApplication
 @EnableMongoRepositories
-@EnableSwagger2
 @EnableWebMvc
 class Application {
 
@@ -63,29 +56,11 @@ class Application {
                     .indentOutput(true)
                     .dateFormat(SimpleDateFormat("yyyy-MM-dd"))
                     .modulesToInstall(ParameterNamesModule())
-
+                converters.add(ByteArrayHttpMessageConverter())
                 converters.add(MappingJackson2HttpMessageConverter(builder.build()))
 
             }
         }
-    }
-
-    @Bean
-    fun api(): Docket {
-        return Docket(DocumentationType.SWAGGER_2)
-            .apiInfo(apiInfo())
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("com.dlegin.cl_shop.controllers"))
-            .paths(PathSelectors.any())
-            .build()
-    }
-
-    private fun apiInfo(): ApiInfo {
-        return ApiInfoBuilder()
-            .title("API Documentation")
-            .description("Documentation for your API")
-            .version("1.0")
-            .build()
     }
 
     companion object {
