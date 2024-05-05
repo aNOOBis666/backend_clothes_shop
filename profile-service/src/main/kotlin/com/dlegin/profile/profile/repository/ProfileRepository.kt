@@ -27,7 +27,7 @@ private fun ProfileRepository.findByAuth(authVO: AuthVO): ProfileVO? {
     }
 }
 
-private fun ProfileRepository.findByToken(token: String): ProfileVO? {
+fun ProfileRepository.findByToken(token: String): ProfileVO? {
     return findAll().firstOrNull {
         it.token == token
     }

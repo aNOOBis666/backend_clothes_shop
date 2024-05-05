@@ -6,16 +6,20 @@ import com.dlegin.profile.profile.models.RegisterVO
 import com.dlegin.profile.profile.repository.*
 import com.google.gson.Gson
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
-import java.net.URI
+import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration
+import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.net.URISyntaxException
 
 @RestController
 @RequestMapping("/api/v1")
-class AuthorizationController {
+@EnableSwagger2
+@Import(SpringDataRestConfiguration::class)
+class ProfileController {
 
     companion object {
         private const val LOGIN = "/login"

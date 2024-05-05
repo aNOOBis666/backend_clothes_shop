@@ -16,8 +16,13 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import springfox.documentation.builders.PathSelectors
+import springfox.documentation.builders.RequestHandlerSelectors
+import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spring.web.plugins.Docket
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 @EnableAutoConfiguration(
 	exclude = [
@@ -57,6 +62,15 @@ class Application {
 
 			}
 		}
+	}
+
+	@Bean
+	fun api(): Docket {
+		return Docket(DocumentationType.SWAGGER_2)
+			.select()
+			.apis(RequestHandlerSelectors.any())
+			.paths(PathSelectors.any())
+			.build()
 	}
 
 	companion object {

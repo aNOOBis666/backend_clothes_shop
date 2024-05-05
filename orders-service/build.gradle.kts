@@ -39,6 +39,11 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 	implementation("com.google.code.gson:gson:2.10.1")
 	implementation ("org.springframework.kafka:spring-kafka:3.0.10")
+
+	implementation("io.springfox:springfox-swagger2:3.0.0")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 }
 
 tasks.withType<KotlinCompile> {
