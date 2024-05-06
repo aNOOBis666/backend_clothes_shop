@@ -12,12 +12,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 class ProfileSocketConfig : WebSocketMessageBrokerConfigurer {
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
-        config.enableSimpleBroker("/profile")
-        config.setApplicationDestinationPrefixes("/app")
+        config.enableSimpleBroker("/socket")
+        config.setApplicationDestinationPrefixes("/profile")
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/me")
-        registry.addEndpoint("/me").withSockJS()
+        registry.addEndpoint("/socket")
     }
 }

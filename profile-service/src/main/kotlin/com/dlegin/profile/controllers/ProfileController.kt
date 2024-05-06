@@ -3,11 +3,13 @@ package com.dlegin.profile.controllers
 import com.dlegin.profile.profile.models.AuthVO
 import com.dlegin.profile.profile.models.ProfileVO
 import com.dlegin.profile.profile.models.RegisterVO
+import com.dlegin.profile.profile.models.TokenVO
 import com.dlegin.profile.profile.repository.*
 import com.google.gson.Gson
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import java.net.URISyntaxException
@@ -28,8 +30,6 @@ class ProfileController {
     @Autowired
     lateinit var profileRepository: ProfileRepository
 
-    private val gson = Gson()
-
     @RequestMapping(
         LOGIN,
         method = [RequestMethod.GET],
@@ -39,11 +39,10 @@ class ProfileController {
     @Transactional
     @ResponseBody
     @Throws(URISyntaxException::class)
-    fun loginProfile(@RequestBody authVO: String): ResponseEntity<String> {
-        val auth = gson.fromJson(authVO, AuthVO::class.java)
-        val result = profileRepository.login(auth)
+    fun loginProfile(@RequestBody authVO: AuthVO): ResponseEntity<TokenVO> {
+        val result = profileRepository.login(authVO)
 
-        return ResponseEntity.ok(gson.toJson(result))
+        return ResponseEntity.ok(result)
     }
 
     @RequestMapping(
@@ -55,11 +54,10 @@ class ProfileController {
     @Transactional
     @Throws(URISyntaxException::class)
     @ResponseBody
-    fun registerProfile(@RequestBody registerVO: String): ResponseEntity<String> {
-        val register = gson.fromJson(registerVO, RegisterVO::class.java)
-        val result = profileRepository.createUser(register)
+    fun registerProfile(@RequestBody registerVO: RegisterVO): ResponseEntity<TokenVO> {
+        val result = profileRepository.createUser(registerVO)
 
-        return ResponseEntity.ok(gson.toJson(result))
+        return ResponseEntity.ok(result)
     }
 
     @RequestMapping(
@@ -70,10 +68,10 @@ class ProfileController {
     @Transactional
     @Throws(URISyntaxException::class)
     @ResponseBody
-    fun getProfile(@RequestHeader("Authorization") token: String): ResponseEntity<String> {
+    fun getProfile(@RequestHeader("Authorization") token: String): ResponseEntity<ProfileVO> {
         val result = profileRepository.getProfile(token)
 
-        return ResponseEntity.ok(gson.toJson(result))
+        return ResponseEntity.ok(result)
     }
 
     @RequestMapping(
@@ -82,17 +80,17 @@ class ProfileController {
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
+    @SendTo("/profile/socket")
     @Transactional
     @Throws(URISyntaxException::class)
     @ResponseBody
     fun editProfile(
         @RequestHeader("Authorization") token: String,
-        @RequestBody profileVO: String
-    ): ResponseEntity<String> {
-        val profileMe = gson.fromJson(profileVO, ProfileVO::class.java)
-        val result = profileRepository.updateProfile(token, profileMe)
+        @RequestBody profileVO: ProfileVO
+    ): ResponseEntity<ProfileVO> {
+        val result = profileRepository.updateProfile(token, profileVO)
 
-        return ResponseEntity.ok(gson.toJson(result))
+        return ResponseEntity.ok(result)
     }
 
     @RequestMapping(
@@ -103,9 +101,9 @@ class ProfileController {
     @Transactional
     @Throws(URISyntaxException::class)
     @ResponseBody
-    fun allUsers(): ResponseEntity<String> {
+    fun allUsers(): ResponseEntity<List<ProfileVO>> {
         val result = profileRepository.getProfiles()
 
-        return ResponseEntity.ok(gson.toJson(result))
+        return ResponseEntity.ok(result)
     }
 }

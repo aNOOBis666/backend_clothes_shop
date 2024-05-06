@@ -13,25 +13,25 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 
 
-@Component
+@Service
 @Slf4j
 class KafkaConsumerListener {
     @Autowired
     lateinit var profileRepository: ProfileRepository
 
-//    @KafkaListener(topics = ["authorization_check"], groupId = "group1")
-//    @SendTo("/")
-//    fun listener(
-//        @Payload token: String?
-//    ) {
-//        if (token != null) {
-//            profileRepository
-//                .findByToken(token)
-//                ?.let {
-////                    Response authorization successful
-//                } ?: run {
-////                    Response authorization failure
-//            }
-//        }
-//    }
+    @KafkaListener(topics = ["authorization_check"], groupId = "group1")
+    @SendTo("/")
+    fun listener(
+        @Payload token: String?
+    ) {
+        if (token != null) {
+            profileRepository
+                .findByToken(token)
+                ?.let {
+//                    Response authorization successful
+                } ?: run {
+//                    Response authorization failure
+            }
+        }
+    }
 }

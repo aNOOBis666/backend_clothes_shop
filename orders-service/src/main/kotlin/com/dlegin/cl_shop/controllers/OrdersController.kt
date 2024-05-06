@@ -1,5 +1,6 @@
 package com.dlegin.cl_shop.controllers
 
+import com.dlegin.cl_shop.kafka.KafkaSender
 import com.dlegin.cl_shop.order.models.OrderVO
 import com.dlegin.cl_shop.order.repository.OrderRepository
 import com.google.gson.Gson
@@ -20,7 +21,8 @@ class OrdersController {
     @Autowired
     lateinit var orderRepository: OrderRepository
 
-    private val gson = Gson()
+    @Autowired
+    lateinit var kafkaSender: KafkaSender
 
     @RequestMapping(
         ORDERS,
@@ -31,11 +33,13 @@ class OrdersController {
     @Transactional
     @ResponseBody
     @Throws(URISyntaxException::class)
-    fun createOrder(@RequestBody orderVO: String): ResponseEntity<String> {
-        val order = gson.fromJson(orderVO, OrderVO::class.java)
-        val result = orderRepository.save(order)
+    fun createOrder(
+        @RequestHeader("Authorization") authToken: String,
+        @RequestBody orderVO: OrderVO
+    ): ResponseEntity<OrderVO> {
+        val result = orderRepository.save(orderVO)
 
-        return ResponseEntity.created(URI("/api/v1/orders/" + result.id)).body(gson.toJson(result))
+        return ResponseEntity.created(URI("/api/v1/orders/" + result.id)).body(result)
     }
 
     @RequestMapping(
@@ -46,9 +50,9 @@ class OrdersController {
     @Transactional
     @Throws(URISyntaxException::class)
     @ResponseBody
-    fun getOrders(): ResponseEntity<String> {
+    fun getOrders(): ResponseEntity<List<OrderVO>> {
         val result = orderRepository.findAll()
-        return ResponseEntity.ok(gson.toJson(result))
+        return ResponseEntity.ok(result)
     }
 
     companion object {
