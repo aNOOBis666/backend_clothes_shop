@@ -13,7 +13,7 @@ class KafkaSender {
     @Autowired
     lateinit var kafkaTemplate: KafkaTemplate<String, String>
 
-    fun sendMessage(message: String, topicName: String) {
+    fun sendMessage(message: String, topicName: String = "Authorization") {
         kafkaTemplate.send(topicName, message);
     }
 }

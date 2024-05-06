@@ -3,10 +3,7 @@ package com.dlegin.cl_shop.controllers
 import com.dlegin.cl_shop.kafka.KafkaSender
 import com.dlegin.cl_shop.order.models.OrderVO
 import com.dlegin.cl_shop.order.repository.OrderRepository
-import com.google.gson.Gson
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional

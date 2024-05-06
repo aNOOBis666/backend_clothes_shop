@@ -4,12 +4,10 @@ import com.dlegin.profile.profile.repository.ProfileRepository
 import com.dlegin.profile.profile.repository.findByToken
 import lombok.extern.slf4j.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.kafka.annotation.KafkaListener
-import org.springframework.kafka.support.KafkaHeaders
-import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 
 
@@ -20,18 +18,20 @@ class KafkaConsumerListener {
     lateinit var profileRepository: ProfileRepository
 
     @KafkaListener(topics = ["authorization_check"], groupId = "group1")
-    @SendTo("/")
+    @SendTo("/profile/")
     fun listener(
         @Payload token: String?
-    ) {
-        if (token != null) {
+    ): ResponseEntity<Boolean> {
+        return if (token != null) {
             profileRepository
                 .findByToken(token)
                 ?.let {
 //                    Response authorization successful
+                    ResponseEntity.ok(true)
                 } ?: run {
 //                    Response authorization failure
+                ResponseEntity.ok(false)
             }
-        }
+        } else ResponseEntity.ok(false)
     }
 }
